@@ -116,7 +116,43 @@
   * {
     @apply border-border outline-ring/50;
   }
-  body {
-    @apply bg-background text-foreground;
+  html {
+    color-scheme: light;
   }
+  html.dark {
+    color-scheme: dark;
+  }
+  body {
+    @apply text-foreground;
+    background: radial-gradient(
+        1200px 600px at 100% -10%,
+        rgba(244, 63, 94, 0.12),
+        transparent 60%
+      ),
+      radial-gradient(900px 500px at -10% 110%, rgba(244, 63, 94, 0.1), transparent 55%),
+      #fff7f7;
+    min-height: 100vh;
+  }
+  html.dark body {
+    background: radial-gradient(
+        1200px 600px at 100% -10%,
+        rgba(244, 63, 94, 0.18),
+        transparent 60%
+      ),
+      radial-gradient(900px 500px at -10% 110%, rgba(136, 19, 55, 0.25), transparent 55%),
+      #1a1012;
+  }
+}
+
+/* Thin, themed scrollbars for the verb list */
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(244, 63, 94, 0.4) transparent;
+}
+.scrollbar-thin::-webkit-scrollbar {
+  width: 8px;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: rgba(244, 63, 94, 0.35);
+  border-radius: 9999px;
 }
