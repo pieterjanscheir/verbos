@@ -1,36 +1,72 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Verbos
+
+A fast, browsable reference for **Brazilian Portuguese verb conjugations**. Search a verb, pick a type, and see it conjugated across five tenses with example sentences in Portuguese and English.
+
+Built with Next.js (App Router), React 19, Tailwind CSS v4, and Framer Motion.
+
+## Features
+
+- **40 common verbs** — regular `-ar`/`-er`/`-ir` plus the high-frequency irregulars.
+- **Five tenses** per verb: present, preterite, imperfect, future, and conditional, for `eu`, `você/ele/ela`, `nós`, and `vocês/eles/elas`.
+- **Auto-generated example sentences** in PT + EN, driven by per-verb data (no hand-maintained translation tables).
+- **Search** by infinitive or English meaning.
+- **Filter** by verb type: all / `-ar` / `-er` / `-ir` / irregular.
+- **Keyboard navigation** — `/` focuses search, `↑`/`↓` move through the list, `Esc` clears search.
+- **Deep links** — the selected verb is stored in the URL hash (e.g. `/#falar`), so links are shareable and back/forward works.
+- **Light & dark mode**, persisted across visits, with a responsive layout for mobile and desktop.
 
 ## Getting Started
 
-First, run the development server:
+Install dependencies and run the dev server:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Command      | Description                          |
+| ------------ | ------------------------------------ |
+| `pnpm dev`   | Start the development server         |
+| `pnpm build` | Create an optimized production build |
+| `pnpm start` | Serve the production build           |
 
-## Learn More
+## Project structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+app/
+  layout.tsx              App shell: header, theme toggle, footer
+  page.tsx                State + search/filter/keyboard/deep-link orchestration
+  globals.css             Theme tokens and adaptive background
+components/
+  VerbList.tsx            Sidebar: search box, type filters, verb list
+  VerbDetail.tsx          Selected verb header + grid of tense cards
+  ConjugationCard.tsx     A single tense card with example sentences
+  ThemeToggle.tsx         Dark-mode toggle (+ no-flash init script)
+lib/
+  config.ts               Verb data, types, tense templates, helpers
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Adding a verb
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Add an entry to the `verbs` array in [`lib/config.ts`](lib/config.ts). Each verb provides its `tenses` and a compact `en` block (`present`, `past`, `gerund`, optional `base`) used to generate the English example sentences:
 
-## Deploy on Vercel
+```ts
+{
+  infinitive: 'falar',
+  translation: 'to speak',
+  type: 'regular -ar',
+  en: { present: 'speak', past: 'spoke', gerund: 'speaking' },
+  tenses: {
+    present: { eu: 'falo', você: 'fala', nós: 'falamos', vocês: 'falam' },
+    // ...preterite, imperfect, future, conditional
+  },
+}
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Deploy
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Deploy on [Vercel](https://vercel.com/new) or any host that supports Next.js.
